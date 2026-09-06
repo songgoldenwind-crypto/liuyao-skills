@@ -1,6 +1,6 @@
-# 六爻 Skills
+# 六爻 Agent Skills（全平台版）
 
-基于 [Agent Skills](https://agentskills.io/) 开放格式的六爻起卦、排盘与断卦 Skills。仓库只维护一份 `SKILL.md` 源文件，通过通用目录、各 Agent 原生目录、上传包和插件市场适配不同客户端。
+面向各类 AI Agent 的六爻起卦、排盘与断卦能力包，基于 [Agent Skills](https://agentskills.io/) 开放格式构建。ChatGPT、Claude、Codex、Cursor、Gemini、GitHub Copilot、OpenCode、Windsurf、Cline 及其他兼容客户端共用同一套 `SKILL.md` 内容，各平台差异由安装器和分发清单处理。
 
 ## 包含内容
 
@@ -12,7 +12,9 @@
 
 两套 Skill 各自保留方法边界。`liuyao` 不会默认混入 `liuyao-divination` 的双原、全局调平或流时重定吉凶规则。
 
-## 支持的 Agent 与渠道
+## 兼容范围
+
+本仓库同时覆盖本地 Agent、IDE Agent、云端对话产品、插件市场和 Skills API。没有列出的兼容客户端也可通过开放标准目录或自定义安装目录使用。
 
 | Agent / 渠道 | 用户级目录或分发方式 | 项目级目录 |
 | --- | --- | --- |
@@ -28,7 +30,7 @@
 | Windsurf | `~/.codeium/windsurf/skills` | `.windsurf/skills` |
 | Cline | `~/.cline/skills` | `.cline/skills` |
 
-其他读取 Agent Skills 的客户端可使用通用目录；目录约定不同的客户端可用 `--agent custom` 指定准确位置。因此兼容范围不依赖硬编码的产品名单。
+所有客户端读取 `skills/` 下的同一份源文件，不维护内容不同的平台分叉。目录约定不同的客户端可用 `--agent custom` 指定准确位置。
 
 ## 一键安装
 
@@ -39,16 +41,16 @@ git clone https://github.com/songgoldenwind-crypto/liuyao-skills.git
 cd liuyao-skills
 ```
 
-安装到开放标准用户目录，适合 Codex 和识别 `.agents/skills` 的客户端：
-
-```bash
-python3 scripts/install.py
-```
-
-同时安装到全部已适配 Agent 的原生用户目录：
+推荐安装方式会同时部署到全部已适配 Agent 的原生用户目录：
 
 ```bash
 python3 scripts/install.py --agent all --scope user
+```
+
+仅安装到开放标准通用目录：
+
+```bash
+python3 scripts/install.py
 ```
 
 只为一个 Agent 安装到项目中：
@@ -65,7 +67,7 @@ python3 scripts/install.py --agent custom --destination /path/to/agent/skills
 
 可以加 `--skill liuyao` 或 `--skill liuyao-divination` 只装一套；已有同名目录时安装器会停止，确认需要替换后加 `--force`。Windows 可把命令中的 `python3` 换成 `py`。
 
-## 插件与在线端
+## 各平台分发
 
 ### Claude Code 插件市场
 
@@ -82,7 +84,7 @@ python3 scripts/install.py --agent custom --destination /path/to/agent/skills
 
 从 [最新 Release](https://github.com/songgoldenwind-crypto/liuyao-skills/releases/latest) 下载 `liuyao.zip` 或 `liuyao-divination.zip`，在 `Customize > Skills` 中分别上传。ZIP 内保留了 Claude 要求的顶层 Skill 文件夹。
 
-### ChatGPT 与 Codex 插件
+### OpenAI 平台
 
 账户中如有 `插件 > Skills > 创建 > 从电脑上传` 入口，可从 [最新 Release](https://github.com/songgoldenwind-crypto/liuyao-skills/releases/latest) 下载两个 `.skill` 文件并分别上传。个人 Skill 在桌面端与网页/移动端可能需要分别添加。
 
@@ -92,7 +94,7 @@ python3 scripts/install.py --agent custom --destination /path/to/agent/skills
 https://github.com/songgoldenwind-crypto/liuyao-skills
 ```
 
-导入后可在 ChatGPT 网页、桌面和移动端以及 Codex 中安装。个人账户能否直接搜索到它取决于公开插件目录的审核与上架状态；仓库中的插件包已经具备提交和工作区导入所需结构。
+导入后可在 ChatGPT 网页、桌面和移动端以及 Codex 中安装。个人账户能否直接搜索到它取决于公开插件目录的审核与上架状态；仓库中的插件包已经具备提交和工作区导入所需结构。OpenAI Skills API 也可直接接收 Release 中的标准 ZIP。
 
 ### 通用上传包
 
@@ -130,9 +132,9 @@ liuyao-paipan --lines 9 7 7 7 7 7 --day 甲子 --month 申
 
 ```text
 .
-├── .agents/plugins/marketplace.json
-├── .claude-plugin/
-├── .codex-plugin/plugin.json
+├── .agents/plugins/marketplace.json   # OpenAI 市场适配
+├── .claude-plugin/                    # Claude 市场适配
+├── .codex-plugin/plugin.json          # OpenAI 插件适配
 ├── skills/
 │   ├── liuyao-divination/
 │   └── liuyao/
