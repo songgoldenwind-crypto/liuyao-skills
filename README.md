@@ -1,6 +1,6 @@
 # 六爻 Skills
 
-面向 Codex 的六爻起卦、排盘与断卦 Skills。仓库包含两套边界清晰的推断体系，以及为它们提供基础卦盘的本地排盘模块。
+基于 [Agent Skills](https://agentskills.io/) 开放格式的六爻起卦、排盘与断卦 Skills。仓库只维护一份 `SKILL.md` 源文件，通过通用目录、各 Agent 原生目录、上传包和插件市场适配不同客户端。
 
 ## 包含内容
 
@@ -12,24 +12,97 @@
 
 两套 Skill 各自保留方法边界。`liuyao` 不会默认混入 `liuyao-divination` 的双原、全局调平或流时重定吉凶规则。
 
-## 安装 Skills
+## 支持的 Agent 与渠道
 
-克隆仓库：
+| Agent / 渠道 | 用户级目录或分发方式 | 项目级目录 |
+| --- | --- | --- |
+| 通用 Agent Skills 客户端 | `~/.agents/skills` 或自定义目录 | `.agents/skills` |
+| Codex CLI、App、Cloud、IDE | `~/.agents/skills` | `.agents/skills` |
+| ChatGPT 网页、桌面、移动端 | Skill 上传 / OpenAI 插件 / 工作区 GitHub 市场 | — |
+| Claude Code、Claude Agent SDK | `~/.claude/skills` 或 Claude 插件市场 | `.claude/skills` |
+| Claude 网页、桌面端、Cowork | 在 `Customize > Skills` 上传 ZIP | — |
+| Cursor | `~/.cursor/skills` | `.cursor/skills` |
+| Gemini CLI | `~/.gemini/skills` | `.gemini/skills` |
+| GitHub Copilot（CLI、编码代理、代码审查、IDE） | `~/.copilot/skills` | `.github/skills` |
+| OpenCode | `~/.config/opencode/skills` | `.opencode/skills` |
+| Windsurf | `~/.codeium/windsurf/skills` | `.windsurf/skills` |
+| Cline | `~/.cline/skills` | `.cline/skills` |
+
+其他读取 Agent Skills 的客户端可使用通用目录；目录约定不同的客户端可用 `--agent custom` 指定准确位置。因此兼容范围不依赖硬编码的产品名单。
+
+## 一键安装
+
+需要 Python 3.10+。先克隆仓库：
 
 ```bash
 git clone https://github.com/songgoldenwind-crypto/liuyao-skills.git
 cd liuyao-skills
 ```
 
-复制两个 Skill 到个人 Skills 目录：
+安装到开放标准用户目录，适合 Codex 和识别 `.agents/skills` 的客户端：
 
 ```bash
-mkdir -p ~/.codex/skills
-cp -R skills/liuyao-divination ~/.codex/skills/
-cp -R skills/liuyao ~/.codex/skills/
+python3 scripts/install.py
 ```
 
-重新启动 Codex 或开始新任务后即可使用，可以直接提出“六爻起卦并断卦”或指定其中一套方法。
+同时安装到全部已适配 Agent 的原生用户目录：
+
+```bash
+python3 scripts/install.py --agent all --scope user
+```
+
+只为一个 Agent 安装到项目中：
+
+```bash
+python3 scripts/install.py --agent cursor --scope project --target /path/to/project
+```
+
+适配任意自定义 Agent 目录：
+
+```bash
+python3 scripts/install.py --agent custom --destination /path/to/agent/skills
+```
+
+可以加 `--skill liuyao` 或 `--skill liuyao-divination` 只装一套；已有同名目录时安装器会停止，确认需要替换后加 `--force`。Windows 可把命令中的 `python3` 换成 `py`。
+
+## 插件与在线端
+
+### Claude Code 插件市场
+
+在 Claude Code 中执行：
+
+```text
+/plugin marketplace add songgoldenwind-crypto/liuyao-skills
+/plugin install liuyao-skills@liuyao-skills
+```
+
+仓库同时提供 `.claude-plugin/plugin.json` 与 `.claude-plugin/marketplace.json`，两个 Skill 会以插件命名空间加载。
+
+### Claude 网页、桌面端与 Cowork
+
+从 [最新 Release](https://github.com/songgoldenwind-crypto/liuyao-skills/releases/latest) 下载 `liuyao.zip` 或 `liuyao-divination.zip`，在 `Customize > Skills` 中分别上传。ZIP 内保留了 Claude 要求的顶层 Skill 文件夹。
+
+### ChatGPT 与 Codex 插件
+
+账户中如有 `插件 > Skills > 创建 > 从电脑上传` 入口，可从 [最新 Release](https://github.com/songgoldenwind-crypto/liuyao-skills/releases/latest) 下载两个 `.skill` 文件并分别上传。个人 Skill 在桌面端与网页/移动端可能需要分别添加。
+
+仓库还包含原生 `.codex-plugin/plugin.json` 和 `.agents/plugins/marketplace.json`。ChatGPT 工作区管理员可在 `管理 > 插件 > 添加 > 导入市场` 中填入仓库 URL，并把路径留空：
+
+```text
+https://github.com/songgoldenwind-crypto/liuyao-skills
+```
+
+导入后可在 ChatGPT 网页、桌面和移动端以及 Codex 中安装。个人账户能否直接搜索到它取决于公开插件目录的审核与上架状态；仓库中的插件包已经具备提交和工作区导入所需结构。
+
+### 通用上传包
+
+生成所有分发文件：
+
+```bash
+python3 scripts/package-skills.py
+```
+
+`dist/*.skill` 与 `dist/*-agent.zip` 的 `SKILL.md` 位于压缩包根目录，分别供 Skill 文件上传入口和标准 ZIP 导入；`dist/liuyao.zip`、`dist/liuyao-divination.zip` 带顶层 Skill 文件夹，供 Claude 上传；`dist/liuyao-skills-plugin.zip` 同时包含 OpenAI 与 Claude 插件清单。
 
 ## 安装排盘模块
 
@@ -57,16 +130,18 @@ liuyao-paipan --lines 9 7 7 7 7 7 --day 甲子 --month 申
 
 ```text
 .
+├── .agents/plugins/marketplace.json
+├── .claude-plugin/
+├── .codex-plugin/plugin.json
 ├── skills/
 │   ├── liuyao-divination/
-│   │   ├── SKILL.md
-│   │   ├── references/
-│   │   └── scripts/
 │   └── liuyao/
-│       ├── SKILL.md
-│       └── references/
 ├── liuyao-paipan-code/
-├── scripts/validate-skills.mjs
+├── scripts/
+│   ├── install.py
+│   ├── package-skills.py
+│   ├── test-distribution.py
+│   └── validate-skills.mjs
 └── LICENSE
 ```
 
@@ -74,6 +149,7 @@ liuyao-paipan --lines 9 7 7 7 7 7 --day 甲子 --month 申
 
 ```bash
 node scripts/validate-skills.mjs
+python3 scripts/test-distribution.py
 
 cd liuyao-paipan-code
 npm ci
@@ -83,7 +159,7 @@ python -m pip install -r requirements.txt
 npm test
 ```
 
-Skill 校验会检查元数据、目录名称和本地 Markdown 链接。排盘模块测试覆盖全部 4096 种爻值组合、64 卦宫位与世应、CLI、Python、HTTP、Vue 组件和异常输入。
+验证覆盖 Skill 元数据和本地链接、全部 Agent 安装目录、覆盖保护、上传包结构、4096 种爻值组合、64 卦宫位与世应、CLI、Python、HTTP、Vue 组件和异常输入。
 
 ## 使用许可
 

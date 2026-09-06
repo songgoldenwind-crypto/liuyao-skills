@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
+  "name": "liuyao-skills",
+  "owner": {
+    "name": "songgoldenwind-crypto",
+    "url": "https://github.com/songgoldenwind-crypto"
+  },
+  "metadata": {
+    "description": "六爻 Skills 发布源"
+  },
+  "plugins": [
+    {
+      "name": "liuyao-skills",
+      "source": "./",
+      "description": "六爻起卦、排盘核对与两套断卦方法",
+      "version": "1.0.0",
+      "category": "education",
+      "tags": ["liuyao", "iching", "六爻"]
+    }
+  ]
+}
