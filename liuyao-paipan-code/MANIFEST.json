@@ -1,0 +1,182 @@
+{
+  "manifest_version": "2.0",
+  "package": "liuyao-paipan-code",
+  "version": "0.1.0",
+  "snapshot_date": "2026-09-06",
+  "scope": "六爻排盘源码、CLI、历法服务、Vue 组件和自动化测试",
+  "files": [
+    {
+      "file": ".gitignore",
+      "bytes": 68,
+      "sha256": "1b816caf9be7df57a3e8bb101743f99d8daa49664334485d87a6af5ad7095bb5"
+    },
+    {
+      "file": ".npmignore",
+      "bytes": 61,
+      "sha256": "febc188b1328fea631000125a312595aae12f7fbad8a451b0386fa13f73d5b9b"
+    },
+    {
+      "file": "LICENSE",
+      "bytes": 2188,
+      "sha256": "ff1c7dbb78ba380485907fd81f2502016cfdac62a46615946c9537b0044bfb65"
+    },
+    {
+      "file": "README.md",
+      "bytes": 9786,
+      "sha256": "72bab251bca270e4ee4e9c544155482e8e15eee2e2390ca82c891ee37e6e6023"
+    },
+    {
+      "file": "package-lock.json",
+      "bytes": 41689,
+      "sha256": "a82a64491d130f6ecbeab42fc747954da10e949cbfc69c9941c9ea3d21a28cdc"
+    },
+    {
+      "file": "package.json",
+      "bytes": 1672,
+      "sha256": "c73ba3f41364ff551b8bc7519c4854844024fc3060050e7db24508ea7a25cd84"
+    },
+    {
+      "file": "requirements.txt",
+      "bytes": 20,
+      "sha256": "8bb501638875f28dce8826ccef565b741031d3a489c232ead6a237bb819bcb2c"
+    },
+    {
+      "file": "scripts/paipan.mjs",
+      "bytes": 3937,
+      "sha256": "0215aa6aec36354be00e92afa4c0125d9cb4d2d01cbacba7930ebb7501a1d7f8"
+    },
+    {
+      "file": "scripts/update-manifest.mjs",
+      "bytes": 2293,
+      "sha256": "2b483207ca9145c862989fa59ebc5b2ba1bbca962d35412a433f6702a5da8a67"
+    },
+    {
+      "file": "server/controllers/divinationController.js",
+      "bytes": 845,
+      "sha256": "62ae9c85983d2543a53c9d581273f8eaead2714279e09d7b29f780fd58d3baa2"
+    },
+    {
+      "file": "server/index.js",
+      "bytes": 734,
+      "sha256": "cc1b49f3256f7e5bc4bf15ba6fae34cd680762af86a48b5a1dd19c4fea405110"
+    },
+    {
+      "file": "server/python/divination_context.py",
+      "bytes": 2922,
+      "sha256": "c5bb4d16e3da64ceb995af841f33c7be59798ef8faa52786f7b9656ff5bd747a"
+    },
+    {
+      "file": "server/routes/divination.js",
+      "bytes": 192,
+      "sha256": "a076fe06b9c2a030a418131ea8229593b05aa39cc82ffc8abfa4f2e3db45bbb9"
+    },
+    {
+      "file": "server/utils/divinationCalendar.js",
+      "bytes": 1346,
+      "sha256": "6a521ec88a2fdd75d38f4404312f82ccaa15985a546dcfbd70a2caf977402865"
+    },
+    {
+      "file": "server/utils/pythonProcess.js",
+      "bytes": 2184,
+      "sha256": "abb24da14d4c36abbafc16ab10a022c8ad1c3f8ef96b4cf9472d237fabf6327c"
+    },
+    {
+      "file": "src/components/HexagramChart.vue",
+      "bytes": 2233,
+      "sha256": "01bccd3738e08a614406e99b0c44fa44f33dac9118b07ab12117c151df96893e"
+    },
+    {
+      "file": "src/composables/useDivination.js",
+      "bytes": 6276,
+      "sha256": "538ad8df1be94b84cea6597971dfa4bb8bfe9ac2542b2ccb96bf4a0c42603451"
+    },
+    {
+      "file": "src/data/hexagrams.js",
+      "bytes": 103837,
+      "sha256": "b656045ffc65d8cb16e5a679ea833b57b10830bec2d1f104c5631876cda54a27"
+    },
+    {
+      "file": "src/index.js",
+      "bytes": 516,
+      "sha256": "c9f7178bb27ccb84d649ee64d430b93bbd5c2ed51efc1ad76c97a5919c23f4f3"
+    },
+    {
+      "file": "src/utils/hexagramText.js",
+      "bytes": 2253,
+      "sha256": "b87b3c71ae097e5b7ac2e77e6a5808f99a6c58ccc3784d4d529d68fcce80b6fa"
+    },
+    {
+      "file": "src/utils/inputValidation.js",
+      "bytes": 3124,
+      "sha256": "8be889529d8da08879aff2b88eddc799936aed953f17f3a15a0e8aee8081502b"
+    },
+    {
+      "file": "src/utils/liuyaoDetail.js",
+      "bytes": 12475,
+      "sha256": "23d17226b6087376cce6c435eb9700f77d71f983b8cc1d307f6967b9525af7e5"
+    },
+    {
+      "file": "tests/component.mjs",
+      "bytes": 791,
+      "sha256": "8be2baaccdfc41ea51015afaa48acf418138e3f5de58d73b15a32e6309c3631c"
+    },
+    {
+      "file": "tests/domain.mjs",
+      "bytes": 4759,
+      "sha256": "9c59c7e1ad23fd833167f3cbfb41ffdbe45674a1379a2a961b42901847dc0ecb"
+    },
+    {
+      "file": "tests/fixtures/hanging.mjs",
+      "bytes": 28,
+      "sha256": "8c8fb88ada76fd2f6afc0a0668a3c7b6ce7e00172e0e471c7c18eba1637ff736"
+    },
+    {
+      "file": "tests/fixtures/large-output.mjs",
+      "bytes": 40,
+      "sha256": "ecf156c4d4978dd598c5b758121b9a9e8f60576510055223838f69277d67b8ed"
+    },
+    {
+      "file": "tests/manifest.mjs",
+      "bytes": 1593,
+      "sha256": "198055465239699f509afdbfd060fbf515b339f46c73708a6496fe60266c0ce6"
+    },
+    {
+      "file": "tests/public-api.mjs",
+      "bytes": 4486,
+      "sha256": "ccfda5e718988e7df1226981f2f2616073a559240b31bbe72af89fb895917968"
+    },
+    {
+      "file": "tests/python.mjs",
+      "bytes": 1132,
+      "sha256": "df7ea02d87f26e910feaaef8b8bb458a208ae6d6ce8c5b2adb91fdf203f320a2"
+    },
+    {
+      "file": "tests/reliability.mjs",
+      "bytes": 668,
+      "sha256": "1b67dbeaca05fc6eb98e3f20d0c01d62361bb16a964459a0b753db8cede6e000"
+    },
+    {
+      "file": "tests/server.mjs",
+      "bytes": 2019,
+      "sha256": "76368db89eba029948d19e3d5b94ccf0a82005d4aefdffadcb0815d0794ddf6e"
+    },
+    {
+      "file": "tests/smoke.mjs",
+      "bytes": 1469,
+      "sha256": "5094585f8b45ca6a49365f75373f7cfea7945c860f75f10b6b8b086883aae1fa"
+    }
+  ],
+  "verification": {
+    "command": "npm test",
+    "coverage": [
+      "4096 种六爻值组合",
+      "64 卦八宫、宫位角色和世应",
+      "CLI 与两种日界",
+      "公开 API 与输入校验",
+      "Python 入口输入校验",
+      "HTTP 日历接口",
+      "Python 子进程超时与输出上限",
+      "Vue 单文件组件编译"
+    ]
+  }
+}

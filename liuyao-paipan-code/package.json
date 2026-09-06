@@ -1,0 +1,58 @@
+{
+  "name": "liuyao-paipan-code",
+  "version": "0.1.0",
+  "description": "六爻起卦、八宫纳甲排盘、历法上下文及 Vue 卦象组件",
+  "license": "SEE LICENSE IN LICENSE",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/songgoldenwind-crypto/liuyao-skills.git",
+    "directory": "liuyao-paipan-code"
+  },
+  "bugs": {
+    "url": "https://github.com/songgoldenwind-crypto/liuyao-skills/issues"
+  },
+  "homepage": "https://github.com/songgoldenwind-crypto/liuyao-skills/tree/main/liuyao-paipan-code#readme",
+  "type": "module",
+  "main": "./src/index.js",
+  "exports": {
+    ".": "./src/index.js",
+    "./vue": "./src/components/HexagramChart.vue",
+    "./server": "./server/index.js",
+    "./calendar": "./server/utils/divinationCalendar.js",
+    "./package.json": "./package.json"
+  },
+  "bin": {
+    "liuyao-paipan": "./scripts/paipan.mjs"
+  },
+  "files": [
+    "src/",
+    "server/",
+    "scripts/paipan.mjs",
+    "README.md",
+    "requirements.txt"
+  ],
+  "scripts": {
+    "test": "node tests/smoke.mjs && node tests/domain.mjs && node tests/public-api.mjs && node tests/python.mjs && node tests/server.mjs && node tests/reliability.mjs && node tests/component.mjs && node tests/manifest.mjs",
+    "paipan": "node scripts/paipan.mjs",
+    "server": "node server/index.js",
+    "manifest:update": "node scripts/update-manifest.mjs"
+  },
+  "dependencies": {
+    "express": "^5.2.1",
+    "opencc-js": "^1.4.2",
+    "vue": "^3.5.30"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "keywords": [
+    "六爻",
+    "周易",
+    "排盘",
+    "纳甲",
+    "divination"
+  ],
+  "devDependencies": {
+    "@vue/compiler-sfc": "^3.5.42"
+  }
+}
