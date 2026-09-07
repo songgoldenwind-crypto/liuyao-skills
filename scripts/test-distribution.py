@@ -115,11 +115,15 @@ class PackagingTests(unittest.TestCase):
                     names = archive.namelist()
                     self.assertIn("SKILL.md", names)
                     self.assertIn("LICENSE", names)
+                    self.assertTrue(archive.read("LICENSE").startswith(b"MIT License\n"))
                     self.assertFalse(any(name.startswith(f"{skill}/") for name in names))
                 with zipfile.ZipFile(zip_archive) as archive:
                     names = archive.namelist()
                     self.assertIn(f"{skill}/SKILL.md", names)
                     self.assertIn(f"{skill}/LICENSE", names)
+                    self.assertTrue(
+                        archive.read(f"{skill}/LICENSE").startswith(b"MIT License\n")
+                    )
                     self.assertFalse("SKILL.md" in names)
 
             with zipfile.ZipFile(output / "liuyao-skills-plugin.zip") as archive:
@@ -128,6 +132,7 @@ class PackagingTests(unittest.TestCase):
                 self.assertIn(".claude-plugin/plugin.json", names)
                 self.assertIn("skills/liuyao/SKILL.md", names)
                 self.assertIn("skills/liuyao-divination/SKILL.md", names)
+                self.assertTrue(archive.read("LICENSE").startswith(b"MIT License\n"))
                 self.assertNotIn(".claude-plugin/marketplace.json", names)
 
 

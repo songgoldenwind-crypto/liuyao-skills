@@ -1,8 +1,8 @@
 {
   "name": "liuyao-paipan-code",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "六爻起卦、八宫纳甲排盘、历法上下文及 Vue 卦象组件",
-  "license": "SEE LICENSE IN LICENSE",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/songgoldenwind-crypto/liuyao-skills.git",

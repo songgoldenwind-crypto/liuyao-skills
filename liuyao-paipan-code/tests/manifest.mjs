@@ -4,8 +4,11 @@ import fs from 'node:fs'
 import path from 'node:path'
 
 const manifest = JSON.parse(fs.readFileSync('MANIFEST.json', 'utf8'))
+const packageJson = JSON.parse(fs.readFileSync('package.json', 'utf8'))
 assert.equal(manifest.manifest_version, '2.0')
-assert.equal(manifest.version, JSON.parse(fs.readFileSync('package.json', 'utf8')).version)
+assert.equal(manifest.version, packageJson.version)
+assert.equal(packageJson.license, 'MIT')
+assert.match(fs.readFileSync('LICENSE', 'utf8'), /^MIT License\n/)
 
 const ignoredDirectories = new Set(['.git', '.venv', '__pycache__', 'dist', 'node_modules'])
 

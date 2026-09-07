@@ -52,6 +52,7 @@ for (const directoryName of skillDirectories) {
 const codexPlugin = readJson('.codex-plugin/plugin.json')
 assert.equal(codexPlugin.name, 'liuyao-skills')
 assert.match(codexPlugin.version, /^\d+\.\d+\.\d+$/)
+assert.equal(codexPlugin.license, 'MIT')
 assert.equal(codexPlugin.skills, './skills/')
 assert.equal(codexPlugin.author.name, 'songgoldenwind-crypto')
 assert(Array.isArray(codexPlugin.interface.defaultPrompt))
@@ -60,6 +61,7 @@ assert(codexPlugin.interface.defaultPrompt.length <= 3)
 const claudePlugin = readJson('.claude-plugin/plugin.json')
 assert.equal(claudePlugin.name, codexPlugin.name)
 assert.equal(claudePlugin.version, codexPlugin.version)
+assert.equal(claudePlugin.license, 'MIT')
 
 const claudeMarketplace = readJson('.claude-plugin/marketplace.json')
 assert.equal(claudeMarketplace.plugins.length, 1)
@@ -72,6 +74,10 @@ assert.equal(codexMarketplace.plugins[0].name, codexPlugin.name)
 assert.equal(codexMarketplace.plugins[0].source.source, 'url')
 assert.equal(codexMarketplace.plugins[0].source.url,
   'https://github.com/songgoldenwind-crypto/liuyao-skills.git')
+
+const license = fs.readFileSync(path.join(root, 'LICENSE'), 'utf8')
+assert.match(license, /^MIT License\n/)
+assert.match(license, /Copyright \(c\) 2026 songgoldenwind-crypto/)
 
 console.log(JSON.stringify({
   status: 'pass',

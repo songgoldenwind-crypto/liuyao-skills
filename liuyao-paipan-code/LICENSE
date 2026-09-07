@@ -1,42 +1,21 @@
-六爻仅限研究非商业许可证 1.0
+MIT License
 
-版权所有（c）2026 songgoldenwind-crypto
+Copyright (c) 2026 songgoldenwind-crypto
 
-在遵守本许可证全部条款的前提下，版权所有者授予任何获得本软件及其相关文档副本的人一项免费、非独占的许可，仅可为非商业研究目的使用、复制和修改本软件。
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-一、允许的用途
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
-“非商业研究”是指不以获得直接或间接商业利益、收入、报酬或竞争优势为目的的个人研究、学术研究或非营利研究。允许在该范围内运行、分析、测试和修改本软件。
-
-二、禁止的用途
-
-不得将本软件或其修改版本用于任何商业用途，包括但不限于：
-
-1. 销售、出租、许可或以其他方式收费提供本软件；
-2. 将本软件集成到收费产品、付费功能、订阅服务或软件即服务中；
-3. 使用本软件提供收费咨询、测算、培训、内容生产或其他服务；
-4. 在广告支持、流量变现、商业推广或营利业务中使用本软件；
-5. 为企业经营、产品开发、客户服务或其他商业活动获取直接或间接利益。
-
-三、复制、修改与分发
-
-仅可为非商业研究目的复制、修改和分发本软件或其修改版本。任何分发必须同时满足以下条件：
-
-1. 保留本许可证全文及版权声明；
-2. 明确标注所作修改；
-3. 继续以本许可证提供，不得改用允许商业用途的许可证；
-4. 不得就本软件本身或其修改版本收取费用。
-
-四、第三方组件
-
-本软件引用或依赖的第三方组件继续适用各自的许可证。本许可证不授予超出第三方许可证范围的权利。
-
-五、终止
-
-违反本许可证任何条款时，许可自动终止。终止后必须停止使用和分发本软件及其修改版本，并删除所持有的相关副本。
-
-六、免责声明
-
-本软件按“现状”提供，不附带任何明示或默示担保，包括但不限于适销性、特定用途适用性和不侵权担保。版权所有者不对因使用本软件或无法使用本软件而产生的任何索赔、损失或其他责任负责。
-
-任何商业使用均须事先取得版权所有者单独的书面授权。
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

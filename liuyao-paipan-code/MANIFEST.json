@@ -1,8 +1,8 @@
 {
   "manifest_version": "2.0",
   "package": "liuyao-paipan-code",
-  "version": "0.1.0",
-  "snapshot_date": "2026-09-06",
+  "version": "0.1.1",
+  "snapshot_date": "2026-09-07",
   "scope": "六爻排盘源码、CLI、历法服务、Vue 组件和自动化测试",
   "files": [
     {
@@ -17,23 +17,23 @@
     },
     {
       "file": "LICENSE",
-      "bytes": 2188,
-      "sha256": "ff1c7dbb78ba380485907fd81f2502016cfdac62a46615946c9537b0044bfb65"
+      "bytes": 1078,
+      "sha256": "8d24978968a399c6207bbddbc0776bbacaead74e30113f458ce8abbfbd45f55b"
     },
     {
       "file": "README.md",
-      "bytes": 9786,
-      "sha256": "72bab251bca270e4ee4e9c544155482e8e15eee2e2390ca82c891ee37e6e6023"
+      "bytes": 9748,
+      "sha256": "bf820831133e903c85e8a7ae59a15c1244e63f71a6b3d449b49a9b7ddca730c4"
     },
     {
       "file": "package-lock.json",
-      "bytes": 41689,
-      "sha256": "a82a64491d130f6ecbeab42fc747954da10e949cbfc69c9941c9ea3d21a28cdc"
+      "bytes": 41670,
+      "sha256": "96d2e49c57ec8455e81349cc8c6c0295afdad3839baab427de5b9d43438fb1e6"
     },
     {
       "file": "package.json",
-      "bytes": 1672,
-      "sha256": "c73ba3f41364ff551b8bc7519c4854844024fc3060050e7db24508ea7a25cd84"
+      "bytes": 1653,
+      "sha256": "a5c35cae6ce7969e3a4bc136b0f0c738bfef9120ec07e2d784362be5cba186a3"
     },
     {
       "file": "requirements.txt",
@@ -137,8 +137,8 @@
     },
     {
       "file": "tests/manifest.mjs",
-      "bytes": 1593,
-      "sha256": "198055465239699f509afdbfd060fbf515b339f46c73708a6496fe60266c0ce6"
+      "bytes": 1733,
+      "sha256": "733b44d00bcc733e24799c0b029da2b8ee474c001316ea0a8723afb2015c30dd"
     },
     {
       "file": "tests/public-api.mjs",
