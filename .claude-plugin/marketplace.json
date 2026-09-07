@@ -13,7 +13,7 @@
       "name": "liuyao-skills",
       "source": "./",
       "description": "六爻起卦、排盘核对与两套断卦方法",
-      "version": "1.1.2",
+      "version": "1.2.0",
       "category": "education",
       "tags": ["liuyao", "iching", "六爻"]
     }
