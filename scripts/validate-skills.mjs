@@ -79,6 +79,11 @@ const license = fs.readFileSync(path.join(root, 'LICENSE'), 'utf8')
 assert.match(license, /^MIT License\n/)
 assert.match(license, /Copyright \(c\) 2026 songgoldenwind-crypto/)
 
+const workbuddyAdapter = fs.readFileSync(path.join(root, 'scripts/workbuddy_compat.py'), 'utf8')
+for (const skill of skillDirectories) {
+  assert.match(workbuddyAdapter, new RegExp(`^[ ]{4}"${skill}": \\{$`, 'm'))
+}
+
 console.log(JSON.stringify({
   status: 'pass',
   skills: skillDirectories.length,

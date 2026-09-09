@@ -4,9 +4,12 @@
 from __future__ import annotations
 
 import argparse
+import json
 import shutil
 import sys
 from pathlib import Path
+
+from workbuddy_compat import render_workbuddy_skill
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -23,6 +26,7 @@ USER_PATHS = {
     "opencode": Path(".config/opencode/skills"),
     "windsurf": Path(".codeium/windsurf/skills"),
     "cline": Path(".cline/skills"),
+    "workbuddy": Path(".codebuddy/skills"),
 }
 
 PROJECT_PATHS = {
@@ -35,6 +39,7 @@ PROJECT_PATHS = {
     "opencode": Path(".opencode/skills"),
     "windsurf": Path(".windsurf/skills"),
     "cline": Path(".cline/skills"),
+    "workbuddy": Path(".codebuddy/skills"),
 }
 
 AGENTS = tuple(name for name in USER_PATHS if name != "universal")
@@ -85,11 +90,11 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def target_directories(args: argparse.Namespace) -> list[Path]:
+def target_directories(args: argparse.Namespace) -> list[tuple[Path, bool]]:
     if args.agent == "custom":
         if args.destination is None:
             raise ValueError("--agent custom requires --destination")
-        return [args.destination.expanduser().resolve()]
+        return [(args.destination.expanduser().resolve(), False)]
     if args.destination is not None:
         raise ValueError("--destination can only be used with --agent custom")
 
@@ -100,14 +105,19 @@ def target_directories(args: argparse.Namespace) -> list[Path]:
     agents = AGENTS if args.agent == "all" else (args.agent,)
 
     # Several agents intentionally share the open-standard .agents/skills path.
-    destinations: list[Path] = []
+    destinations: list[tuple[Path, bool]] = []
     seen: set[Path] = set()
     for agent in agents:
         destination = (base / layouts[agent]).resolve()
         if destination not in seen:
-            destinations.append(destination)
+            destinations.append((destination, agent == "workbuddy"))
             seen.add(destination)
     return destinations
+
+
+def plugin_version() -> str:
+    manifest = REPO_ROOT / ".codex-plugin" / "plugin.json"
+    return json.loads(manifest.read_text(encoding="utf-8"))["version"]
 
 
 def remove_existing(path: Path) -> None:
@@ -126,19 +136,24 @@ def install(args: argparse.Namespace) -> int:
 
     skill_names = SKILLS if args.skill == "all" else (args.skill,)
     operations = [
-        (SKILLS_ROOT / skill_name, directory / skill_name)
-        for directory in destinations
+        (SKILLS_ROOT / skill_name, directory / skill_name, workbuddy)
+        for directory, workbuddy in destinations
         for skill_name in skill_names
     ]
 
-    conflicts = [destination for _, destination in operations if destination.exists() or destination.is_symlink()]
+    conflicts = [
+        destination
+        for _, destination, _ in operations
+        if destination.exists() or destination.is_symlink()
+    ]
     if conflicts and not args.force:
         print("error: these skill directories already exist; use --force to replace them:", file=sys.stderr)
         for conflict in conflicts:
             print(f"  {conflict}", file=sys.stderr)
         return 1
 
-    for source, destination in operations:
+    version = plugin_version()
+    for source, destination, workbuddy in operations:
         print(f"{'would install' if args.dry_run else 'installing'} {source.name} -> {destination}")
         if args.dry_run:
             continue
@@ -150,6 +165,16 @@ def install(args: argparse.Namespace) -> int:
             destination,
             ignore=shutil.ignore_patterns(".DS_Store", "__pycache__", "*.pyc"),
         )
+        if workbuddy:
+            skill_file = destination / "SKILL.md"
+            skill_file.write_text(
+                render_workbuddy_skill(
+                    source.name,
+                    skill_file.read_text(encoding="utf-8"),
+                    version,
+                ),
+                encoding="utf-8",
+            )
 
     if not args.dry_run:
         print(f"installed {len(operations)} skill director{'y' if len(operations) == 1 else 'ies'}")

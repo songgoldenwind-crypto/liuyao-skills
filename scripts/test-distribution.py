@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import json
 import subprocess
 import sys
 import tempfile
@@ -15,6 +16,9 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 INSTALLER = REPO_ROOT / "scripts" / "install.py"
 PACKAGER = REPO_ROOT / "scripts" / "package-skills.py"
 SKILLS = ("liuyao", "liuyao-divination")
+VERSION = json.loads(
+    (REPO_ROOT / ".codex-plugin/plugin.json").read_text(encoding="utf-8")
+)["version"]
 
 USER_LAYOUTS = (
     ".agents/skills",
@@ -25,6 +29,7 @@ USER_LAYOUTS = (
     ".config/opencode/skills",
     ".codeium/windsurf/skills",
     ".cline/skills",
+    ".codebuddy/skills",
 )
 
 PROJECT_LAYOUTS = (
@@ -36,6 +41,7 @@ PROJECT_LAYOUTS = (
     ".opencode/skills",
     ".windsurf/skills",
     ".cline/skills",
+    ".codebuddy/skills",
 )
 
 
@@ -100,6 +106,25 @@ class InstallerTests(unittest.TestCase):
             )
             self.assertTrue((destination / "liuyao-divination/SKILL.md").is_file())
 
+    def test_workbuddy_install_renders_platform_metadata(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            run(
+                str(INSTALLER), "--agent", "workbuddy", "--scope", "user",
+                "--target", str(root), "--skill", "liuyao-divination",
+            )
+            installed = (
+                root / ".codebuddy/skills/liuyao-divination/SKILL.md"
+            ).read_text(encoding="utf-8")
+            self.assertIn('display_name: "六爻测算"', installed)
+            self.assertIn('description_zh:', installed)
+            self.assertIn('description_en:', installed)
+            self.assertIn(f'version: "{VERSION}"', installed)
+            self.assertIn('author: "songgoldenwind-crypto"', installed)
+            self.assertIn('allowed-tools: "Read, Bash"', installed)
+            self.assertIn("@references/01-casting-subject.md", installed)
+            self.assertNotIn("](references/", installed)
+
 
 class PackagingTests(unittest.TestCase):
     def test_upload_and_plugin_archives(self) -> None:
@@ -110,6 +135,7 @@ class PackagingTests(unittest.TestCase):
                 skill_archive = output / f"{skill}.skill"
                 agent_zip_archive = output / f"{skill}-agent.zip"
                 zip_archive = output / f"{skill}.zip"
+                workbuddy_archive = output / f"{skill}-workbuddy.zip"
                 self.assertEqual(skill_archive.read_bytes(), agent_zip_archive.read_bytes())
                 with zipfile.ZipFile(skill_archive) as archive:
                     names = archive.namelist()
@@ -125,6 +151,20 @@ class PackagingTests(unittest.TestCase):
                         archive.read(f"{skill}/LICENSE").startswith(b"MIT License\n")
                     )
                     self.assertFalse("SKILL.md" in names)
+                with zipfile.ZipFile(workbuddy_archive) as archive:
+                    names = archive.namelist()
+                    skill_path = f"{skill}/SKILL.md"
+                    self.assertIn(skill_path, names)
+                    self.assertIn(f"{skill}/LICENSE", names)
+                    rendered = archive.read(skill_path).decode("utf-8")
+                    for field in (
+                        "name", "description", "description_zh", "description_en",
+                        "version", "author",
+                    ):
+                        self.assertRegex(rendered, rf"(?m)^{field}: .+$")
+                    self.assertIn('allowed-tools: "Read, Bash"', rendered)
+                    self.assertIn("@references/", rendered)
+                    self.assertNotIn("](references/", rendered)
 
             with zipfile.ZipFile(output / "liuyao-skills-plugin.zip") as archive:
                 names = archive.namelist()

@@ -1,6 +1,6 @@
 # 六爻 Agent Skills（全平台版）
 
-面向各类 AI Agent 的六爻起卦、排盘与断卦能力包，基于 [Agent Skills](https://agentskills.io/) 开放格式构建。ChatGPT、Claude、Codex、Cursor、Gemini、GitHub Copilot、OpenCode、Windsurf、Cline 及其他兼容客户端共用同一套 `SKILL.md` 内容，各平台差异由安装器和分发清单处理。
+面向各类 AI Agent 的六爻起卦、排盘与断卦能力包，基于 [Agent Skills](https://agentskills.io/) 开放格式构建。ChatGPT、Claude、Codex、WorkBuddy、Cursor、Gemini、GitHub Copilot、OpenCode、Windsurf、Cline 及其他兼容客户端共用同一套技能规则，各平台元数据和引用语法由安装器与打包脚本生成。
 
 ## 包含内容
 
@@ -74,6 +74,7 @@
 | OpenCode | `~/.config/opencode/skills` | `.opencode/skills` |
 | Windsurf | `~/.codeium/windsurf/skills` | `.windsurf/skills` |
 | Cline | `~/.cline/skills` | `.cline/skills` |
+| WorkBuddy | `~/.codebuddy/skills` 或上传 WorkBuddy ZIP | `.codebuddy/skills` |
 
 所有客户端读取 `skills/` 下的同一份源文件，不维护内容不同的平台分叉。目录约定不同的客户端可用 `--agent custom` 指定准确位置。
 
@@ -104,6 +105,12 @@ python3 scripts/install.py
 python3 scripts/install.py --agent cursor --scope project --target /path/to/project
 ```
 
+安装到 WorkBuddy 用户目录：
+
+```bash
+python3 scripts/install.py --agent workbuddy --scope user
+```
+
 适配任意自定义 Agent 目录：
 
 ```bash
@@ -113,6 +120,12 @@ python3 scripts/install.py --agent custom --destination /path/to/agent/skills
 可以加 `--skill liuyao` 或 `--skill liuyao-divination` 只装一套；已有同名目录时安装器会停止，确认需要替换后加 `--force`。Windows 可把命令中的 `python3` 换成 `py`。
 
 ## 各平台分发
+
+### WorkBuddy
+
+从 [最新 Release](https://github.com/songgoldenwind-crypto/liuyao-skills/releases/latest) 下载 `liuyao-workbuddy.zip` 或 `liuyao-divination-workbuddy.zip`，在 WorkBuddy 的“专家·技能·连接器 → 技能 → 添加技能 → 上传技能”中分别导入。
+
+WorkBuddy 专用包包含中英文展示说明、版本、作者和工具白名单，并将参考资料转换为 WorkBuddy 的 `@references/...` 引用形式。它用于 WorkBuddy 本地上传及开放平台解析；其他 Agent 继续使用标准包。
 
 ### Claude Code 插件市场
 
@@ -149,7 +162,7 @@ https://github.com/songgoldenwind-crypto/liuyao-skills
 python3 scripts/package-skills.py
 ```
 
-`dist/*.skill` 与 `dist/*-agent.zip` 的 `SKILL.md` 位于压缩包根目录，分别供 Skill 文件上传入口和标准 ZIP 导入；`dist/liuyao.zip`、`dist/liuyao-divination.zip` 带顶层 Skill 文件夹，供 Claude 上传；`dist/liuyao-skills-plugin.zip` 同时包含 OpenAI 与 Claude 插件清单。
+`dist/*.skill` 与 `dist/*-agent.zip` 的 `SKILL.md` 位于压缩包根目录，分别供 Skill 文件上传入口和标准 ZIP 导入；`dist/liuyao.zip`、`dist/liuyao-divination.zip` 带顶层 Skill 文件夹，供 Claude 上传；`dist/*-workbuddy.zip` 带 WorkBuddy 元数据和 `@references` 引用；`dist/liuyao-skills-plugin.zip` 同时包含 OpenAI 与 Claude 插件清单。
 
 ## 安装排盘模块
 
@@ -188,6 +201,7 @@ liuyao-paipan --lines 9 7 7 7 7 7 --day 甲子 --month 申
 │   ├── install.py
 │   ├── package-skills.py
 │   ├── test-distribution.py
+│   ├── workbuddy_compat.py
 │   └── validate-skills.mjs
 ├── CHANGELOG.md
 └── LICENSE
@@ -207,7 +221,7 @@ python -m pip install -r requirements.txt
 npm test
 ```
 
-验证覆盖 Skill 元数据和本地链接、全部 Agent 安装目录、覆盖保护、上传包结构、4096 种爻值组合、64 卦宫位与世应、CLI、Python、HTTP、Vue 组件和异常输入。
+验证覆盖 Skill 元数据和本地链接、全部 Agent 安装目录、WorkBuddy 元数据及引用转换、覆盖保护、上传包结构、4096 种爻值组合、64 卦宫位与世应、CLI、Python、HTTP、Vue 组件和异常输入。
 
 ## 使用许可
 

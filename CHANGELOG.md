@@ -2,6 +2,19 @@
 
 本文件记录面向使用者的功能、规则、兼容性和许可变化。
 
+## 1.2.1 — 2026-09-09
+
+### WorkBuddy 兼容
+
+- 安装器新增 `--agent workbuddy`，用户级与项目级分别写入 `~/.codebuddy/skills` 和 `.codebuddy/skills`。
+- 新增 `liuyao-workbuddy.zip` 与 `liuyao-divination-workbuddy.zip`，补齐 WorkBuddy 开放平台要求的中英文描述、版本和作者字段。
+- WorkBuddy 安装目录及上传包使用 `@references/...` 显式引用资料，并仅声明读取资料与执行辅助脚本所需的 `Read, Bash` 权限。
+- 标准 Agent Skills、Claude、OpenAI 与插件包继续由同一份规则源生成，避免平台副本分叉。
+
+### 版本
+
+- Codex 与 Claude 插件版本升至 `1.2.1`；排盘模块继续使用 `0.1.1`。
+
 ## 1.2.0 — 2026-09-07
 
 ### 跨专题成立阶梯
