@@ -10,6 +10,16 @@ import re
 AUTHOR = "songgoldenwind-crypto"
 
 WORKBUDDY_METADATA = {
+    "liuyao-skills": {
+        "display_name": "六爻开源版",
+        "display_name_en": "Open Liuyao Skills",
+        "description_zh": (
+            "一个入口安装两套六爻断法、六次爻值录入与确定性排盘。"
+        ),
+        "description_en": (
+            "One card for two Liuyao reading methods, six-line input, and deterministic charts."
+        ),
+    },
     "liuyao": {
         "display_name": "六爻分层断卦",
         "display_name_en": "Layered Liuyao Reading",
@@ -81,3 +91,14 @@ def render_workbuddy_skill(skill_name: str, canonical: str, version: str) -> str
     )
     rendered_header = "\n".join(f"{key}: {yaml_string(value)}" for key, value in fields)
     return f"---\n{rendered_header}\n---\n{body}"
+
+
+def render_workbuddy_method(skill_name: str, canonical: str) -> str:
+    """Nest an existing public skill as a method reference in the single card."""
+    parsed = FRONTMATTER.fullmatch(canonical)
+    if not parsed or frontmatter_value(parsed.group("header"), "name") != skill_name:
+        raise ValueError(f"{skill_name}: malformed canonical SKILL.md")
+    return REFERENCE_LINK.sub(
+        lambda match: f"@references/{skill_name}/{match.group(1)}",
+        parsed.group("body"),
+    )
