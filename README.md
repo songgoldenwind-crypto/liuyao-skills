@@ -12,6 +12,16 @@
 
 两套 Skill 各自保留方法边界。`liuyao` 不会默认混入 `liuyao-divination` 的双原、全局调平或流时重定吉凶规则。
 
+## v1.3.0 单卡安装与六次录入
+
+- WorkBuddy 新增 `liuyao-skills-workbuddy.zip`：一个卡片包含两套六爻方法、方法路由、录入脚本和本地排盘模块。原来的两个单项 WorkBuddy 包仍可分别安装。
+- `scripts/liuyao-intake.py` 接受从初爻到上爻的六次 `6/7/8/9` 或“老阴/少阳/少阴/老阳”，保留原始输入并输出可核对的盘。只有时间而没有成卦方式时，不自动补造六爻动爻。
+- [三个可复现例子](examples/quickstart.md)演示求职、求财与双动爻核盘。完整梅花、测字和奇门不在此开源包内。
+
+```bash
+python3 scripts/liuyao-intake.py --lines 老阴 少阳 少阴 老阳 少阳 少阴 --day 甲子 --month 申
+```
+
 ## v1.2.0 全专题结果分层
 
 针对婚恋、合作、在职事业、考试审批、出行航运、失物、健康和行情解读可能由单个术数节点直接跳到最终结果的问题，增加跨专题成立阶梯：
@@ -123,9 +133,9 @@ python3 scripts/install.py --agent custom --destination /path/to/agent/skills
 
 ### WorkBuddy
 
-从 [最新 Release](https://github.com/songgoldenwind-crypto/liuyao-skills/releases/latest) 下载 `liuyao-workbuddy.zip` 或 `liuyao-divination-workbuddy.zip`，在 WorkBuddy 的“专家·技能·连接器 → 技能 → 添加技能 → 上传技能”中分别导入。
+从 [最新 Release](https://github.com/songgoldenwind-crypto/liuyao-skills/releases/latest) 下载 `liuyao-skills-workbuddy.zip`，在 WorkBuddy 的“专家·技能·连接器 → 技能 → 添加技能 → 上传技能”中导入，即显示为“六爻开源版”单卡。只需其中一种断法时，可继续分别下载 `liuyao-workbuddy.zip` 或 `liuyao-divination-workbuddy.zip`。
 
-WorkBuddy 专用包包含中英文展示说明、版本、作者和工具白名单，并将参考资料转换为 WorkBuddy 的 `@references/...` 引用形式。它用于 WorkBuddy 本地上传及开放平台解析；其他 Agent 继续使用标准包。
+WorkBuddy 专用包包含中英文展示说明、版本、作者和工具白名单，并将参考资料转换为 WorkBuddy 的 `@references/...` 引用形式。单卡包内有排盘源码；公历自动计算日月需按包内排盘说明安装 `lunar-python`。它用于 WorkBuddy 本地上传及开放平台解析；其他 Agent 继续使用标准包。
 
 ### Claude Code 插件市场
 
@@ -162,7 +172,7 @@ https://github.com/songgoldenwind-crypto/liuyao-skills
 python3 scripts/package-skills.py
 ```
 
-`dist/*.skill` 与 `dist/*-agent.zip` 的 `SKILL.md` 位于压缩包根目录，分别供 Skill 文件上传入口和标准 ZIP 导入；`dist/liuyao.zip`、`dist/liuyao-divination.zip` 带顶层 Skill 文件夹，供 Claude 上传；`dist/*-workbuddy.zip` 带 WorkBuddy 元数据和 `@references` 引用；`dist/liuyao-skills-plugin.zip` 同时包含 OpenAI 与 Claude 插件清单。
+`dist/*.skill` 与 `dist/*-agent.zip` 的 `SKILL.md` 位于压缩包根目录，分别供 Skill 文件上传入口和标准 ZIP 导入；`dist/liuyao.zip`、`dist/liuyao-divination.zip` 带顶层 Skill 文件夹，供 Claude 上传；`dist/*-workbuddy.zip` 带 WorkBuddy 元数据和 `@references` 引用，其中 `liuyao-skills-workbuddy.zip` 是两种六爻方法的单卡包；`dist/liuyao-skills-plugin.zip` 同时包含 OpenAI 与 Claude 插件清单。
 
 ## 安装排盘模块
 

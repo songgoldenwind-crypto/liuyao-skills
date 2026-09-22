@@ -8,7 +8,7 @@ import json
 import zipfile
 from pathlib import Path
 
-from workbuddy_compat import render_workbuddy_skill
+from workbuddy_compat import render_workbuddy_method, render_workbuddy_skill
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -74,6 +74,46 @@ def plugin_entries() -> list[tuple[Path, str]]:
     return [(path, path.relative_to(REPO_ROOT).as_posix()) for path in included]
 
 
+def workbuddy_suite_entries() -> list[tuple[Path, str]]:
+    prefix = "liuyao-skills"
+    entries = [
+        (REPO_ROOT / "workbuddy" / "liuyao-skills" / "SKILL.md", f"{prefix}/SKILL.md"),
+        (REPO_ROOT / "LICENSE", f"{prefix}/LICENSE"),
+        (REPO_ROOT / "examples" / "quickstart.md", f"{prefix}/references/examples.md"),
+        (REPO_ROOT / "scripts" / "liuyao-intake.py", f"{prefix}/scripts/liuyao-intake.py"),
+        (
+            REPO_ROOT / "skills" / "liuyao-divination" / "scripts" / "time_segments.py",
+            f"{prefix}/scripts/time_segments.py",
+        ),
+    ]
+    for skill_name in SKILLS:
+        skill_root = REPO_ROOT / "skills" / skill_name
+        entries.append(
+            (skill_root / "SKILL.md", f"{prefix}/references/{skill_name}/method.md")
+        )
+        entries.extend(
+            (path, f"{prefix}/references/{skill_name}/references/"
+                   + path.relative_to(skill_root / "references").as_posix())
+            for path in files_under(skill_root / "references")
+        )
+
+    engine_root = REPO_ROOT / "liuyao-paipan-code"
+    engine_files = [
+        *files_under(engine_root / "src"),
+        *files_under(engine_root / "server"),
+        engine_root / "scripts" / "paipan.mjs",
+        *(engine_root / name for name in (
+            "package.json", "package-lock.json", "requirements.txt", "README.md", "LICENSE"
+        )),
+    ]
+    entries.extend(
+        (path, f"{prefix}/scripts/liuyao-paipan/"
+         + path.relative_to(engine_root).as_posix())
+        for path in engine_files
+    )
+    return entries
+
+
 def plugin_version() -> str:
     manifest = REPO_ROOT / ".codex-plugin" / "plugin.json"
     return json.loads(manifest.read_text(encoding="utf-8"))["version"]
@@ -116,6 +156,23 @@ def main() -> None:
     plugin_path = output / "liuyao-skills-plugin.zip"
     write_archive(plugin_path, plugin_entries())
     built.append(plugin_path)
+
+    suite_source = REPO_ROOT / "workbuddy" / "liuyao-skills" / "SKILL.md"
+    suite_overrides = {
+        "liuyao-skills/SKILL.md": render_workbuddy_skill(
+            "liuyao-skills", suite_source.read_text(encoding="utf-8"), version
+        ).encode("utf-8")
+    }
+    for skill_name in SKILLS:
+        method_source = REPO_ROOT / "skills" / skill_name / "SKILL.md"
+        suite_overrides[f"liuyao-skills/references/{skill_name}/method.md"] = (
+            render_workbuddy_method(
+                skill_name, method_source.read_text(encoding="utf-8")
+            ).encode("utf-8")
+        )
+    suite_path = output / "liuyao-skills-workbuddy.zip"
+    write_archive(suite_path, workbuddy_suite_entries(), overrides=suite_overrides)
+    built.append(suite_path)
 
     for path in built:
         print(path)

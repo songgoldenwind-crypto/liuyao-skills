@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import json
+import re
 import subprocess
 import sys
 import tempfile
@@ -127,6 +128,50 @@ class InstallerTests(unittest.TestCase):
 
 
 class PackagingTests(unittest.TestCase):
+    def test_workbuddy_single_card_runs_from_extracted_archive(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            run(str(PACKAGER), "--output", str(root / "dist"))
+            with zipfile.ZipFile(root / "dist/liuyao-skills-workbuddy.zip") as archive:
+                names = set(archive.namelist())
+                prefix = "liuyao-skills/"
+                self.assertIn(prefix + "SKILL.md", names)
+                self.assertIn(prefix + "scripts/liuyao-intake.py", names)
+                self.assertIn(prefix + "scripts/liuyao-paipan/scripts/paipan.mjs", names)
+                self.assertIn(prefix + "LICENSE", names)
+                for skill in SKILLS:
+                    method_name = prefix + f"references/{skill}/method.md"
+                    self.assertIn(method_name, names)
+                    method = archive.read(method_name).decode("utf-8")
+                    self.assertNotIn("\n---\n", method)
+                for document in (
+                    prefix + "SKILL.md",
+                    *(prefix + f"references/{skill}/method.md" for skill in SKILLS),
+                ):
+                    body = archive.read(document).decode("utf-8")
+                    for target in re.findall(r"@references/([\w./-]+)", body):
+                        self.assertIn(prefix + "references/" + target, names)
+                self.assertFalse(any(
+                    "/meihua" in name or "/qimen" in name or "/character-divination" in name
+                    for name in names
+                ))
+                archive.extractall(root / "extracted")
+
+            intake = root / "extracted/liuyao-skills/scripts/liuyao-intake.py"
+            result = subprocess.run(
+                [sys.executable, str(intake), "--lines", "老阴", "少阳", "少阴",
+                 "老阳", "少阳", "少阴", "--day", "甲子", "--month", "申"],
+                cwd=intake.parent.parent, text=True, capture_output=True, check=True,
+            )
+            output = json.loads(result.stdout)
+            self.assertEqual(output["input"]["normalized_lines"], [6, 7, 8, 9, 7, 8])
+            self.assertEqual(output["chart"]["palace"]["name"], "兑")
+            self.assertEqual(output["chart"]["calendar"]["emptyBranches"], "戌亥")
+            self.assertEqual(
+                {row["lineNumber"] for row in output["chart"]["rows"] if row["actualChange"]},
+                {1, 4},
+            )
+
     def test_upload_and_plugin_archives(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             output = Path(temporary)
